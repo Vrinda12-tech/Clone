@@ -7,7 +7,7 @@ const connectMongoDB=async ()=>{
         console.error(`Error connecting to mongoose:${error.message}`)
         process.exit(1)
 
-        // hKsJz3iKx7elnjxw
+       
     }
 }
 export default connectMongoDB;
