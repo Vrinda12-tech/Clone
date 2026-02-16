@@ -6,17 +6,16 @@ dotenv.config();
 
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
-
-
+import postRoutes from "./routes/post.routes.js";
 const app = express();
 const PORT= process.env.PORT ||5000;
-
 app.use(express.json()); //it is used as a middelware to take care of requestsssssss
 //second middleware hain and it is for ......-->postman
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use("/api/auth",authRoutes);
 app.use("/api/users",userRoutes);
+app.use("/api/posts",postRoutes);
 app.listen(PORT,()=>{
     console.log(`server is runnning ${PORT}`);
     connectMongoDB();

@@ -45,6 +45,14 @@ const userSchema=new mongoose.Schema(
     bio:{
         type:String,
         default:""
-    },},{timestamps:true});
-const User=mongoose.model("user",userSchema);
+    },
+    likedPosts:[{type:mongoose.Schema.Types.ObjectId,
+        ref:"Post",
+        default:[]
+    }]
+},{timestamps:true});
+const User=mongoose.model("User",userSchema);
 export default User;
+//we are doing changes in user models
+//-->
+//because we want our give all likes 
