@@ -5,23 +5,61 @@ import XSvg from "../../../components/svgs/X";
 
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
+import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+//so login page u have to create by yourself.....
+//we have to connect the backend and the frontend
+//that's not to tough
+//why we are using mutation in tanstackQUeryy
+//that is not to tough
+
 
 const LoginPage = () => {
 	const [formData, setFormData] = useState({
 		username: "",
 		password: "",
 	});
+	const queryClient = useQueryClient();
+	const {mutate,isError,isPending,error} =useMutation({
+		mutationFn:async({username,password})=>{
+			try {
+				const res =await fetch("/api/auth/login",{
+					method:"POST",
+					credentials:"include",
+					headers:{
+						"Content-Type":"application/json"
+					},
+					body:JSON.stringify({username,password})
+
+				});
+				const data = await res.json();
+				if(!res.ok) throw new Error(data.error || "Something went wrong");
+				if(data.error) throw new Error(data.error);
+				console.log(data);
+				return data;
+				
+			} catch (error) {
+				toast.error(error.message);
+				throw error;
+			}
+		},
+		onSuccess:(data)=>{
+			// toast.success("login successfull");
+			//so whenever I did a login i only got a tost from react
+			queryClient.invalidateQueries({queryKey:["authUser"]});
+		}
+	})
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(formData);
+		mutate(formData);
 	};
 
 	const handleInputChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const isError = false;
+	// const isError = false;
 
 	return (
 		<div className='max-w-screen-xl mx-auto flex h-screen'>
@@ -56,7 +94,7 @@ const LoginPage = () => {
 						/>
 					</label>
 					<button className='btn rounded-full btn-primary text-white'>Login</button>
-					{isError && <p className='text-red-500'>Something went wrong</p>}
+					{isError && <p className='text-red-500'>{isPending ? "Loading..." : "Login"}</p>}
 				</form>
 				<div className='flex flex-col gap-2 mt-4'>
 					<p className='text-white text-lg'>{"Don't"} have an account?</p>

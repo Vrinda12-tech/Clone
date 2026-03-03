@@ -93,7 +93,12 @@ export const login =async(req,res)=>{
 }
 export const logout=async(req,res)=>{
     try {
-        res.cookie("jwt","",{maxAge:0});
+        res.cookie("jwt","",{
+            maxAge:0,
+            httpOnly:true,
+            sameSite:"strict",
+            secure: process.env.NODE_ENV !== "development",
+        });
         res.status(200).json({message:"User logout successfully"});
     } catch (error) {
         console.log("error while looging out");

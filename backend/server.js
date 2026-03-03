@@ -32,4 +32,6 @@ app.listen(PORT,()=>{
 //we are creating cookies kind of stuff and we have to generate tokenss
 //everything literally eeevrything is going in server.js
 //so we have to deal with this
+//thodha brain laga kar chapa kar kuch bhi mat chapa 
+//login ko home page se auth karna hain try karooooooooo
 
